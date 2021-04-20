@@ -1,5 +1,10 @@
 # Install prerequisites
 sudo apt install netbase git libc6 libssl-dev libstdc++6 lsb-release libhackrf-dev liblimesuite-dev build-essential net-tools pkg-config libncurses5-dev libbladerf-dev libfam0 lighttpd librtlsdr-dev libusb-1.0-0-dev tcl-dev chrpath debhelper tcl8.6-dev python3-dev python3-venv libz-dev dh-systemd libboost-system-dev libboost-program-options-dev libboost-regex-dev libboost-filesystem-dev tcl tclx8.4 tcllib tcl-tls itcl3 -y
+sudo dpkg --add-architecture armhf
+sudo apt install libc6:armhf python3:armhf -y
+ldconfig
+sudo apt update
+sudo apt dist-upgrade
 
 # Install patched TCL-TLS (Flightaware)
 cd ~/
@@ -33,19 +38,16 @@ cd ../
 sudo dpkg -i dump1090-fa_5.0_arm64.deb
 sudo systemctl restart dump1090-fa
 
-# Install Radarbox
-sudo bash -c "$(wget -O - http://apt.rb24.com/inst_rbfeeder.sh)"
-sudo systemctl restart rbfeeder
-
 # Install FR24
-sudo dpkg --add-architecture armhf
-sudo apt update
-sudo apt dist-upgrade
-sudo apt install libc6:armhf -y
-ldconfig
 bash -c "$(wget -O - https://repo-feed.flightradar24.com/install_fr24_rpi.sh)"
 systemctl restart fr24feed
 systemctl enable fr24feed
+
+# Install Radarbox
+sudo bash -c "$(wget -O - http://apt.rb24.com/inst_rbfeeder.sh)"
+sudo apt-get install mlat-client -y
+sudo systemctl restart rbfeeder
+
 
 # Install Piaware Web Interface
 cd ~/
